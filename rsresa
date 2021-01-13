@@ -1,0 +1,5 @@
+   rm rsresa.o
+  rm int2
+  gfortran -c -std=legacy rsresa.f
+  gfortran -std=legacy -o int2 rsresa.o  prini.f  quaplot.f durdec.f
+  ./int2
