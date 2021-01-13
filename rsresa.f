@@ -37,6 +37,9 @@ cccc        call cavitget(x0,y0,n0)
   
         iw=21
         call quaplot(iw,x0,y0,n0,3,'curve as entered*')
+        do i=1,n0
+          write(37,*) x0(i),y0(i)
+        enddo
   
   
         nlarge=n2
@@ -50,7 +53,6 @@ c
           call prinf('failed execution in rsrespni*',i,0)
           call prinf('exiting*',i,0)
           stop
-
         endif
   
         call prinf('after rsrespni, ier=*',ier,1)
@@ -75,6 +77,7 @@ c
 c 
         call rsrespnt(ts(i),zs(1,i),tangs(1,i),curv(i),
      1      w,par2)
+        if(i.lt.5) call prin2('zs=*',zs(1,i),2)
  1400 continue
 c 
 c       plot the resulting curve
@@ -82,6 +85,9 @@ c
         call arrsepa(zs,xs,ys,nsub)
 c 
         iw=22
+        do i=1,nsub
+          write(38,*) xs(i),ys(i)
+        enddo
         call quaplot(iw,xs,ys,nsub,3,'curve as resampled*')
 c 
 c       test the tangent vectors produced by the
