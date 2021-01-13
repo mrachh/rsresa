@@ -9,11 +9,11 @@ C
 c 
 C      INPUT ALL PARAMETERS
 C 
-         PRINT *, 'ENTER N2'
-         READ *,N2
+         PRINT *, 'ENTER N2 (must be greater than 14)'
+         READ *,N2 
          CALL PRINF('N2=*',N2,1 )
 C 
-         PRINT *, 'ENTER NMIN'
+         PRINT *, 'ENTER NMIN (must be less than n2/4)'
          READ *,NMIN
          CALL PRINF('NMIN=*',NMIN,1 )
   
@@ -23,7 +23,7 @@ C
 C 
 C       CREATE THE TEST CURVE
 C 
-        CALL CREELI(X0,Y0,N0)
+cc        CALL CREELI(X0,Y0,N0)
         CALL CRSHIP(X0,Y0,N0)
 cccc       CALL CRETRI(X0,Y0,N0)
 ccc        CALL STAR (X0,Y0,N0)
@@ -46,6 +46,12 @@ c
         lenw=100 000
         call rsrespni(ier,x0,y0,n0,nmin,nlarge,
      1      curvelen,err,w,lenw,lsave,lused)
+        if(ier.ne.0) then
+          call prinf('failed execution in rsrespni*',i,0)
+          call prinf('exiting*',i,0)
+          stop
+
+        endif
   
         call prinf('after rsrespni, ier=*',ier,1)
         call prin2('after rsrespni, err=*',err,1)
@@ -743,10 +749,18 @@ c       number of points
 c 
         eps=1.0d-14
         nders=2
+        ier = 0
 c 
         call rsresa(ier,x0,y0,n0,nmin,nders,
      1     w(izs),w(ider1),w(ider2),der3,nlarge,w(ifis),h,
      2     acc,err,w(iw),ltot)
+
+        if(ier.ne.0) then
+          call prinf('unsuccessful execution of code*',i,0)
+          call prinf('check error codes in rsresa*',i,0)
+          call prinf('exiting with error code=*',ier,1)
+          return
+        endif
 c 
 cccc        call prin2('after rsresa, ac=*',acc,1)
 cccc        call prin2('after rsresa, err=*',err,1)
